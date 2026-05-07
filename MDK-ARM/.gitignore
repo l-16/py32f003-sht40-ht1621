@@ -12,6 +12,7 @@
 .kilo/
 .vscode/
 *.dbgconf
+CMSIS/DSP_Lib/
 
 
 
