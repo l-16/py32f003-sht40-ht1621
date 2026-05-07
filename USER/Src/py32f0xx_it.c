@@ -1,0 +1,126 @@
+/**
+ ******************************************************************************
+ * @file    py32f0xx_it.c
+ * @author  MCU Application Team
+ * @brief   Interrupt Service Routines.
+ ******************************************************************************
+ * @attention
+ *
+ * <h2><center>&copy; Copyright (c) 2023 Puya Semiconductor Co.
+ * All rights reserved.</center></h2>
+ *
+ * This software component is licensed by Puya under BSD 3-Clause license,
+ * the "License"; You may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at:
+ *                        opensource.org/licenses/BSD-3-Clause
+ *
+ ******************************************************************************
+ * @attention
+ *
+ * <h2><center>&copy; Copyright (c) 2016 STMicroelectronics.
+ * All rights reserved.</center></h2>
+ *
+ * This software component is licensed by ST under BSD 3-Clause license,
+ * the "License"; You may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at:
+ *                        opensource.org/licenses/BSD-3-Clause
+ *
+ ******************************************************************************
+ */
+
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+#include "py32f0xx_it.h"
+
+/* Private includes ----------------------------------------------------------*/
+#include "lptim.h"
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+/* Private function prototypes -----------------------------------------------*/
+/* Private user code ---------------------------------------------------------*/
+/* External variables --------------------------------------------------------*/
+
+/******************************************************************************/
+/*          Cortex-M0+ Processor Interruption and Exception Handlers          */
+/******************************************************************************/
+/**
+ * @brief This function handles Non maskable interrupt.
+ */
+void NMI_Handler(void)
+{
+}
+
+/**
+ * @brief This function handles Hard fault interrupt.
+ */
+void HardFault_Handler(void)
+{
+  while (1)
+  {
+  }
+}
+
+/**
+ * @brief This function handles System service call via SWI instruction.
+ */
+void SVC_Handler(void)
+{
+}
+
+/**
+ * @brief This function handles Pendable request for system service.
+ */
+void PendSV_Handler(void)
+{
+}
+
+/**
+ * @brief This function handles System tick timer.
+ */
+void SysTick_Handler(void)
+{
+  HAL_IncTick();
+}
+
+void EXTI0_1_IRQHandler(void)
+{
+
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_1);
+}
+
+// 外部中断回调函数
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  if (GPIO_Pin == GPIO_PIN_1) // PA1按键
+  {
+    // 设置按键唤醒标志
+    wakeup_source = WAKEUP_KEY;
+  }
+}
+
+// LPTIM中断处理
+void LPTIM1_IRQHandler(void)
+{
+    HAL_LPTIM_IRQHandler(&LPTIMConf);
+}
+
+// LPTIM自动重载匹配回调
+void HAL_LPTIM_AutoReloadMatchCallback(LPTIM_HandleTypeDef *hlptim)
+{
+    wakeup_source = WAKEUP_LPTIM;
+
+#if (DBG == 1)
+    UART1_SendString("LPTIM wakeup\r\n");
+#endif
+}
+
+/******************************************************************************/
+/* PY32F0xx Peripheral Interrupt Handlers                                     */
+/* Add here the Interrupt Handlers for the used peripherals.                  */
+/* For the available peripheral interrupt handler names,                      */
+/* please refer to the startup file.                                          */
+/******************************************************************************/
+
+/************************ (C) COPYRIGHT Puya *****END OF FILE******************/
