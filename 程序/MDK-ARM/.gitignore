@@ -11,7 +11,7 @@
 # Keil默认对象文件目录
 .kilo/
 .vscode/
-*.dbgconf
+DebugConfig/
 
 
 
@@ -22,7 +22,7 @@ build/
 Build/
 output/
 Output/
-MDK-ARM/Objects/
+Objects/
 Obj/
 Listings/
 Lst/
@@ -68,11 +68,12 @@ bin/
 # Keil MDK-ARM 专有文件
 # ================================
 # 用户配置（本地化）
-*.uvoptx
+
 *.uvopt
 *.uvguix.*
 *.uvgui.*
 # 项目文件（需提交）
+!*.uvoptx
 !*.uvprojx
 !*.uvproj
 # Keil 特有的中间文件
